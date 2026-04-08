@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GrindRanks — Dark Season</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #000000;
+      --bg-soft: #0a0a0a;
+      --text: #ffffff;
+      --text-soft: #cfcfcf;
+      --accent: #00c8ff;   /* neon blue */
+      --accent2: #a855ff;  /* neon purple */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111 0, #000 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(0, 200, 255, 0.3);
+      background: linear-gradient(90deg, #050505, #050510);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    nav a {
+      color: var(--text-soft);
+      text-decoration: none;
+      margin-left: 1.25rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      padding: 1.75rem;
+      background: rgba(10, 10, 10, 0.9);
+      border-radius: 12px;
+      border: 1px solid rgba(168, 85, 255, 0.25);
+      box-shadow: 0 0 18px rgba(0, 200, 255, 0.15);
+    }
+
+    h1, h2, h3 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent2);
+    }
+
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    p {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 1.25rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(0, 200, 255, 0.5);
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: radial-gradient(circle at top, #00c8ff33, #000);
+      color: var(--text);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn.secondary {
+      border-color: var(--accent2);
+      background: radial-gradient(circle at top, #a855ff33, #000);
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 18px rgba(0, 200, 255, 0.4);
+    }
+
+    .code-block {
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      background: #050505;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      overflow-x: auto;
+      white-space: pre;
+      margin-top: 0.75rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 0.55rem 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .rank1 {
+      border: 1px solid rgba(0, 200, 255, 0.7);
+      box-shadow: 0 0 22px rgba(0, 200, 255, 0.4);
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .tier-card {
+      background: #050505;
+      border-radius: 10px;
+      border: 1px solid rgba(168, 85, 255, 0.4);
+      padding: 0.75rem 0.9rem;
+      font-size: 0.85rem;
+    }
+
+    .tier-label {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 0.5rem;
+    }
+
+    ul li {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    footer {
+      text-align: center;
+      color: #555;
+      font-size: 0.75rem;
+      padding: 1.5rem 0 2.5rem;
+    }
+
+    @media (max-width: 700px) {
+      nav a {
+        margin-left: 0.75rem;
+        font-size: 0.75rem;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+      }
+
+      section {
+        padding: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo">GrindRanks</div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#rank1">Rank 1</a>
+        <a href="#categories">Categories</a>
+        <a href="#rules">Rules</a>
+        <a href="#join">Join</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home">
+      <h1>GrindRanks — Dark Season</h1>
+      <p class="tagline">
+        Three skills. One champion. Only the strongest reach Rank&nbsp;1.
+      </p>
+
+      <div class="pill-row">
+        <div class="pill">Running</div>
+        <div class="pill">Rage‑Baiting</div>
+        <div class="pill">Hiding</div>
+      </div>
+
+      <p>
+        Compete in dark‑mode style leaderboards and prove who really owns the grind.
+        Every player is ranked with simple tiers only: HT1 at the top, LT5 at the bottom.
+        No explanations. Just pure ranks.
+      </p>
+
+      <div class="btn-row">
+        <a href="#join" class="btn">Enter Competition</a>
+        <a href="#leaderboard" class="btn secondary">View Leaderboard</a>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="leaderboard">
+      <h2>Leaderboard — Season 1</h2>
+      <p>Update this table as players compete and their tiers change.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Running</th>
+            <th>Rage‑Baiting</th>
+            <th>Hiding</th>
+            <th>Overall</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rank1">
+            <td>1</td>
+            <td>PlayerName</td>
+            <td>HT1</td>
+            <td>HT2</td>
+            <td>HT3</td>
+            <td>Rank 1</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>PlayerTwo</td>
+            <td>HT3</td>
+            <td>LT1</td>
+            <td>HT4</td>
+            <td>Rank 2</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>PlayerThree</td>
+            <td>LT2</td>
+            <td>LT3</td>
+            <td>HT5</td>
+            <td>Rank 3</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- RANK 1 PROFILE -->
+    <section id="rank1" class="rank1">
+      <h2>Rank 1 — Best Overall</h2>
+      <p>Showcase the current top player and their tiers in all categories.</p>
+
+      <div class="code-block">
+🥇 RANK 1 — BEST OVERALL
+Player: PlayerName
+
+RUNNING: HT1
+RAGE‑BAITING: HT2
+HIDING: HT3
+      </div>
+    </section>
+
+    <!-- CATEGORIES / TIERS -->
+    <section id="categories">
+      <h2>Categories & Tier Scale</h2>
+      <p>Each category uses the same tier scale. No meanings, just labels.</p>
+
+      <div class="tiers-grid">
+        <div class="tier-card">
+          <div class="tier-label">Running</div>
+          <ul>
+            <li>HT1</li>
+            <li>HT2</li>
+            <li>HT3</li>
+            <li>LT3</li>
+            <li>LT4</li>
+            <li>LT5</li>
+          </ul>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-label">Rage‑Baiting</div>
+          <ul>
+            <li>HT1</li>
+            <li>HT2</li>
+            <li>HT3</li>
+            <li>LT3</li>
+            <li>LT4</li>
+            <li>LT5</li>
+          </ul>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-label">Hiding</div>
+          <ul>
+            <li>HT1</li>
+            <li>HT2</li>
+            <li>HT3</li>
+            <li>LT3</li>
+            <li>LT4</li>
+            <li>LT5</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RULES -->
+    <section id="rules">
+      <h2>Rules</h2>
+      <p>Keep the competition fun, fair, and safe for everyone.</p>
+
+      <ul>
+        <li>No cheating.</li>
+        <li>No harassment or toxic behaviour.</li>
+        <li>Rage‑baiting must stay fun and non‑harmful.</li>
+        <li>Proof is required for all submissions (screenshots or clips).</li>
+        <li>One account per player.</li>
+        <li>Staff / mods have final say on ranks and tiers.</li>
+      </ul>
+    </section>
+
+    <!-- JOIN / SUBMIT -->
+    <section id="join">
+      <h2>Join the Competition</h2>
+      <p>Use this layout as a guide for your form or Discord setup.</p>
+
+      <div class="code-block">
+JOIN THE COMPETITION
+
+1. Enter your player name.
+2. Choose your category (Running / Rage‑Baiting / Hiding).
+3. Choose your tier (HT1 → LT5).
+4. Submit your proof (screenshot or clip link).
+5. Wait for verification and leaderboard update.
+      </div>
+
+      <p style="margin-top: 1rem;">
+        You can turn this into a real form using your site builder
+        (Wix form, Google Form, etc.) and link it here.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    GrindRanks — Dark Season • Custom gaming competition concept
+  </footer>
+</body>
+</html>
